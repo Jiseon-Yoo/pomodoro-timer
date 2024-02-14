@@ -62,23 +62,25 @@ function pauseTimer(event) {
     event.preventDefault();
     if (!isPaused) {
         clearInterval(timerLoop); // Stop the timer interval
+        const currentTime = Date.now();
+        const remainingTime = futureTime - currentTime;
+        timeDifference = remainingTime;
         isPaused = true;
+        btn_pause.textContent = 'Resume';
 
-        if (futureTime !== 0) {
-            btn_pause.textContent = 'Resume';
-        }
-        for (let i = 0; i < semicircles.length; i++) {
-            semicircles[i].style.animationPlayState = 'paused'; // Pause the progress ring animation
-        }
+
     } else {
-        timerLoop = setInterval(countDownTimer); // Restart the timer interval
         isPaused = false;
         btn_pause.textContent = 'Pause';
-        for (let i = 0; i < semicircles.length; i++) {
-            semicircles[i].style.animationPlayState = 'running'; // Resume the progress ring animation
-        }
+        const currentTime = Date.now();
+        futureTime = currentTime + timeDifference;
+        timerLoop = setInterval(countDownTimer, 1000); //Resume the timer
+
     }
 }
+
+
+// Reset the timer
 function resetTimer() {
     setDefaultTimer();
 }
