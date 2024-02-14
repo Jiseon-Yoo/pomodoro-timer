@@ -1,34 +1,80 @@
-const semicicles = document.querySelectorAll('.semicircle');
+// document.addEventListener('DOMContentLoaded', function() {
+    // document.addEventListener('DOMContentLoaded', (event) => {
+    //     countDownTimer();
+    // }  );
+
+
+const semicircles = document.querySelectorAll('.semicircle');
 const timer = document.querySelector('.timer');
+const input = document.getElementById('minute-input');
+const btn_start = document.querySelector('.btn-start');
+const btn_pause = document.querySelector('.btn-pause');
+const btn_reset = document.querySelector('.btn-reset');
 
-//input
-const min = 0;
-const sec = 15;
+let setTime = 0;
+let futureTime = 0;
+let timerLoop = null;
+let isPaused = false;
 
-const minutes = min * 60000;
-const seconds = sec * 1000;
-const setTime = minutes + seconds;
-const startTime = Date.now();
-const futureTime = startTime + setTime;
+setDefaultTimer();
 
-const timerLoop = setInterval(countDownTimer);
-countDownTimer();
+//countDownTimer();
+function setDefaultTimer() {
+    timer.innerHTML =  `
+        <div>00</div>
+        <div class="colon">:</div>
+        <div>00</div>
+        `;
+}
+
+// start timer
+function startTimer(event) {
+    event.preventDefault();
+    //input
+    const min = parseInt(input.value);
+    if (isNaN(min) || min < 1 || min > 60) {
+        alert('Input must be a number between 1 and 60');
+        setDefaultTimer()
+        return;
+    }
+    const sec = 0;
+
+    const minutes = min * 60000;
+    const seconds = sec * 1000;
+    setTime = minutes + seconds;
+    const startTime = Date.now();
+    futureTime = startTime + setTime;
+    
+
+    timerLoop = setInterval(countDownTimer);
+    // btn_start.disabled = 'true';
+    //input.value = '';
+    countDownTimer();
+}
+
+function pauseTimer() {
+    if(!isPaused) {
+        clearInterval(timerLoop);
+        isPaused = true;
+        btn_pause.textContent = 'Resume'
+    }
+}
+
 
 function countDownTimer() {
     const currentTime = Date.now();
     const remainingTime = futureTime - currentTime;
     const angle = (remainingTime / setTime) * 360;
 
-
     //progress indicator
     if(angle > 180) {
-        semicicles[2].style.display = 'none';
-        semicicles[0].style.transform = 'rotate(180deg)';
-        semicicles[1].style.transform = `rotate(${angle}deg)`;
+        semicircles[2].style.display = 'none';
+        semicircles[0].style.transform = 'rotate(180deg)';
+        semicircles[1].style.transform = `rotate(${angle}deg)`;
     } else {
-        semicicles[2].style.display = 'block';
-        semicicles[0].style.transform = `rotate(${angle}deg)`;
-        semicicles[1].style.transform = `rotate(${angle}deg)`;
+        semicircles[2].style.display = 'block';
+        semicircles[0].style.transform = `rotate(${angle}deg)`;
+        semicircles[1].style.transform = `rotate(${angle}deg)`;
     }
     //timer
     const mins = Math.floor((remainingTime / (1000 * 60)) % 60).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});;
@@ -42,8 +88,8 @@ function countDownTimer() {
 
     //5sec-condition
     if(remainingTime <= 6000) {
-        semicicles[0].style.backgroundColor = "red";
-        semicicles[1].style.backgroundColor = "red";
+        semicircles[0].style.backgroundColor = "red";
+        semicircles[1].style.backgroundColor = "red";
         timer.style.color = "red";
 
     }
@@ -51,9 +97,9 @@ function countDownTimer() {
     //end
     if(remainingTime < 0) {
         clearInterval(timerLoop);
-        semicicles[0].style.display = 'none';
-        semicicles[1].style.display = 'none';
-        semicicles[2].style.display = 'none';
+        semicircles[0].style.display = 'none';
+        semicircles[1].style.display = 'none';
+        semicircles[2].style.display = 'none';
 
         timer.innerHTML = `
         <div>00</div>
@@ -64,3 +110,5 @@ function countDownTimer() {
         timer.style.color = "lightgray";
     }
 }
+
+//});

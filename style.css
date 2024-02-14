@@ -7,7 +7,7 @@ html {
     font-family: "Protest Strike", sans-serif;
     font-weight: 400;
     font-style: normal;
-    color: #088b8b;
+    color: #048243;
   }
 .outermost-container {
     display: flex;
@@ -59,11 +59,11 @@ h1 {
     transform-origin: right center;
 }
 .semicircle:nth-child(1){
-    background-color: #088b8b;
+    background-color: #048243;
     z-index: 2;
 }
 .semicircle:nth-child(2){
-    background-color: #088b8b;
+    background-color: #048243;
     z-index: 3;
 }
 .semicircle:nth-child(3){
@@ -140,7 +140,7 @@ input {
     border-radius: 8px;
     text-align: center;
     width: 200px;
-    padding: 10px;
+    
 }
 
 /* button container */
@@ -148,14 +148,13 @@ input {
     display: flex;
     justify-content: space-between;
     width: 450px;
-    /* padding-top: 45px; */
     padding-bottom: 30px;
     margin: 0;
 }
 /* button */
 .btn {
     color: white;
-    background-color: #088b8b;
+    background-color: #048243;
     border-style: none;
     font-size: 30px;
     border-radius: 8px;
