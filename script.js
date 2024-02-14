@@ -43,22 +43,40 @@ function startTimer(event) {
     const startTime = Date.now();
     futureTime = startTime + setTime;
     
-
     timerLoop = setInterval(countDownTimer);
-    // btn_start.disabled = 'true';
-    //input.value = '';
+
+    btn_pause.textContent = 'Pause';
+
+    if(isPaused) {
+        btn_start.disabled = 'true';
+    } else {
+        btn_start.disabled = 'false';
+    }
+    input.value = '';
+    
     countDownTimer();
 }
+
 // Pause timer
-function pauseTimer() {
-    if(!isPaused) {
-        clearInterval(timerLoop);
+function pauseTimer(event) {
+    event.preventDefault();
+    if (!isPaused) {
+        clearInterval(timerLoop); // Stop the timer interval
         isPaused = true;
-        btn_pause.textContent = 'Resume'
+
+        if (futureTime !== 0) {
+            btn_pause.textContent = 'Resume';
+        }
+        for (let i = 0; i < semicircles.length; i++) {
+            semicircles[i].style.animationPlayState = 'paused'; // Pause the progress ring animation
+        }
     } else {
-        timerLoop = setInterval(countDownTimer);
+        timerLoop = setInterval(countDownTimer); // Restart the timer interval
         isPaused = false;
-        btn_pause.textContent = 'Pause'
+        btn_pause.textContent = 'Pause';
+        for (let i = 0; i < semicircles.length; i++) {
+            semicircles[i].style.animationPlayState = 'running'; // Resume the progress ring animation
+        }
     }
 }
 function resetTimer() {
