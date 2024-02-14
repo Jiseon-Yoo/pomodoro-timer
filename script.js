@@ -1,9 +1,3 @@
-// document.addEventListener('DOMContentLoaded', function() {
-    // document.addEventListener('DOMContentLoaded', (event) => {
-    //     countDownTimer();
-    // }  );
-
-
 const semicircles = document.querySelectorAll('.semicircle');
 const timer = document.querySelector('.timer');
 const input = document.getElementById('minute-input');
@@ -18,13 +12,17 @@ let isPaused = false;
 
 setDefaultTimer();
 
-//countDownTimer();
 function setDefaultTimer() {
+    for (let i = 0; i < semicircles.length; i++) {
+        semicircles[i].style.display = 'none';
+    }
     timer.innerHTML =  `
         <div>00</div>
         <div class="colon">:</div>
         <div>00</div>
         `;
+
+    timer.style.color = "lightgray";
 }
 
 // start timer
@@ -34,7 +32,7 @@ function startTimer(event) {
     const min = parseInt(input.value);
     if (isNaN(min) || min < 1 || min > 60) {
         alert('Input must be a number between 1 and 60');
-        setDefaultTimer()
+        setDefaultTimer();
         return;
     }
     const sec = 0;
@@ -51,20 +49,33 @@ function startTimer(event) {
     //input.value = '';
     countDownTimer();
 }
-
+// Pause timer
 function pauseTimer() {
     if(!isPaused) {
         clearInterval(timerLoop);
         isPaused = true;
         btn_pause.textContent = 'Resume'
+    } else {
+        timerLoop = setInterval(countDownTimer);
+        isPaused = false;
+        btn_pause.textContent = 'Pause'
     }
 }
-
+function resetTimer() {
+    setDefaultTimer();
+}
 
 function countDownTimer() {
     const currentTime = Date.now();
     const remainingTime = futureTime - currentTime;
     const angle = (remainingTime / setTime) * 360;
+
+    timer.style.color = "#048243";
+
+    // Show semicircles when the timer starts
+    for (let i = 0; i < semicircles.length; i++) {
+    semicircles[i].style.display = 'block';
+    }
 
     //progress indicator
     if(angle > 180) {
@@ -97,18 +108,7 @@ function countDownTimer() {
     //end
     if(remainingTime < 0) {
         clearInterval(timerLoop);
-        semicircles[0].style.display = 'none';
-        semicircles[1].style.display = 'none';
-        semicircles[2].style.display = 'none';
-
-        timer.innerHTML = `
-        <div>00</div>
-        <div class="colon">:</div>
-        <div>00</div>
-        `;
-
-        timer.style.color = "lightgray";
+        setDefaultTimer();
     }
 }
 
-//});
