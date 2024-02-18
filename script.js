@@ -12,15 +12,26 @@ let isPaused = false;
 
 setDefaultTimer();
 
+//format number to display 00:00
+function formatNumber(num) {
+    return num.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});
+}
+
+function displayTime(mins, secs) {
+    const formattedMins = formatNumber(mins);
+    const formattedSecs = formatNumber(secs);
+    timer.innerHTML =  `
+        <div>${formattedMins}</div>
+        <div class="colon">:</div>
+        <div>${formattedSecs}</div>
+        `;
+}
+
 function setDefaultTimer() {
     for (let i = 0; i < semicircles.length; i++) {
         semicircles[i].style.display = 'none';
     }
-    timer.innerHTML =  `
-        <div>00</div>
-        <div class="colon">:</div>
-        <div>00</div>
-        `;
+    displayTime(0,0);
 
     timer.style.color = "lightgray";
 }
@@ -67,8 +78,6 @@ function pauseTimer(event) {
         timeDifference = remainingTime;
         isPaused = true;
         btn_pause.textContent = 'Resume';
-
-
     } else {
         isPaused = false;
         btn_pause.textContent = 'Pause';
@@ -108,21 +117,16 @@ function countDownTimer() {
         semicircles[1].style.transform = `rotate(${angle}deg)`;
     }
     //timer
-    const mins = Math.floor((remainingTime / (1000 * 60)) % 60).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});;
-    const secs = Math.floor((remainingTime / 1000) % 60).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false});;
+    const mins = Math.floor((remainingTime / (1000 * 60)) % 60);
+    const secs = Math.floor((remainingTime / 1000) % 60);
 
-    timer.innerHTML = `
-    <div>${mins}</div>
-    <div class="colon">:</div>
-    <div>${secs}</div>
-    `;
+    displayTime(formatNumber(mins), formatNumber(secs));
 
     //5sec-condition
     if(remainingTime <= 6000) {
         semicircles[0].style.backgroundColor = "red";
         semicircles[1].style.backgroundColor = "red";
         timer.style.color = "red";
-
     }
 
     //end
