@@ -120,7 +120,7 @@ function countDownTimer() {
     const mins = Math.floor((remainingTime / (1000 * 60)) % 60);
     const secs = Math.floor((remainingTime / 1000) % 60);
 
-    displayTime(formatNumber(mins), formatNumber(secs));
+    displayTime(mins, secs);
 
     //5sec-condition
     if(remainingTime <= 6000) {
